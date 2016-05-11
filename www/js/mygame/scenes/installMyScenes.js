@@ -1,4 +1,4 @@
-G.installMyScenes = (function (SceneManager, Width, Height) {
+G.installMyScenes = (function (SceneManager, MVVMScene, Constants, StartScreen, LevelOverview) {
     "use strict";
 
     function installMyScenes(sceneServices) {
@@ -6,13 +6,15 @@ G.installMyScenes = (function (SceneManager, Width, Height) {
 
         var sceneManager = new SceneManager();
 
-        sceneManager.add(function (next) {
-            var stage = sceneServices.stage;
-            stage.createText('Hello World :)').setPosition(Width.HALF, Height.HALF);
-        });
+        var startScreen = new MVVMScene(sceneServices, sceneServices.scenes[Constants.START_SCREEN], 
+            new StartScreen(sceneServices), Constants.START_SCREEN);
+        var levelOverview = new LevelOverview(sceneServices);
+        
+        sceneManager.add(startScreen.show.bind(startScreen));
+        sceneManager.add(levelOverview.show.bind(levelOverview));
 
         return sceneManager;
     }
 
     return installMyScenes;
-})(H5.SceneManager, H5.Width, H5.Height);
+})(H5.SceneManager, H5.MVVMScene, G.Constants, G.StartScreen, G.LevelOverview);
