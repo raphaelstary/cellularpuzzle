@@ -15,14 +15,14 @@ G.MyGameResources = (function (Constants, URL, addFontToDOM) {
     function processFiles() {
         // process your downloaded files
 
-        if (URL) {
-            addFontToDOM([
-                {
-                    name: Constants.FONT_NAME,
-                    url: URL.createObjectURL(font.blob)
-                }
-            ]);
-        }
+        // if (URL) {
+        //     addFontToDOM([
+        //         {
+        //             name: Constants.FONT_NAME,
+        //             url: URL.createObjectURL(font.blob)
+        //         }
+        //     ]);
+        // }
         return {
             // services created with downloaded files
             scenes: scenes
