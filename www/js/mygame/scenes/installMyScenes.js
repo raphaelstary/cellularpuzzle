@@ -6,7 +6,7 @@ G.installMyScenes = (function (SceneManager, MVVMScene, Constants, StartScreen, 
 
         var sceneManager = new SceneManager();
 
-        var startScreen = new MVVMScene(sceneServices, sceneServices.scenes[Constants.START_SCREEN], 
+        var startScreen = new MVVMScene(sceneServices, sceneServices.scenes[Constants.START_SCREEN],
             new StartScreen(sceneServices), Constants.START_SCREEN);
         var levelOverview = new LevelOverview(sceneServices);
         
