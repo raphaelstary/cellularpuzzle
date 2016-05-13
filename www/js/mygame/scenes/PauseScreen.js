@@ -1,4 +1,4 @@
-G.PauseScreen = (function () {
+G.PauseScreen = (function (PauseReturnValue) {
     "use strict";
 
     function PauseScreen(services) {
@@ -9,7 +9,7 @@ G.PauseScreen = (function () {
     };
 
     PauseScreen.prototype.resumeUp = function () {
-
+        this.nextScene(PauseReturnValue.RESUME);
     };
 
     PauseScreen.prototype.restartDown = function () {
@@ -17,7 +17,7 @@ G.PauseScreen = (function () {
     };
 
     PauseScreen.prototype.restartUp = function () {
-
+        this.nextScene(PauseReturnValue.RESTART);
     };
 
     PauseScreen.prototype.exitDown = function () {
@@ -25,8 +25,8 @@ G.PauseScreen = (function () {
     };
 
     PauseScreen.prototype.exitUp = function () {
-
+        this.nextScene(PauseReturnValue.CANCEL);
     };
 
     return PauseScreen;
-})();
+})(G.PauseReturnValue);
