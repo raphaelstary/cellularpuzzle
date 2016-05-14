@@ -2,6 +2,8 @@ G.Constants = (function () {
     "use strict";
 
     var GAME_KEY = 'cap-';
+    var SCENE_WIDTH = 750;
+    var SCENE_HEIGHT = 1334;
 
     return {
         // files
@@ -14,7 +16,8 @@ G.Constants = (function () {
         GAME_SCREEN: 'game_screen',
         PAUSE_SCREEN: 'pause_screen',
         RULES_OVERLAY: 'rules_overlay',
-        RULE: 'rule',
+        RULE_SHOW: 'rule_show',
+        RULE_EDIT: 'rule_edit',
         LEVEL_OVERVIEW: 'level_overview',
 
         // storage
@@ -22,11 +25,15 @@ G.Constants = (function () {
         LEVEL_UNLOCKING: GAME_KEY + 'level_unlocking',
         LEVEL_FINISHED: GAME_KEY + 'level_finished',
         LEVEL_FINISHED_NOW: GAME_KEY + 'level_finished_now',
-        
+
         // magic numbers
-        DEFAULT_SCENE_WIDTH: 750,
-        DEFAULT_SCENE_HEIGHT: 1334,
-        
+        DEFAULT_SCENE_WIDTH: SCENE_WIDTH,
+        DEFAULT_SCENE_HEIGHT: SCENE_HEIGHT,
+        DEFAULT_SCENE_RECT: {
+            width: SCENE_WIDTH,
+            height: SCENE_HEIGHT
+        },
+
         // defaults
         PRIMARY_FONT_COLOR: '#000000',
         SECONDARY_FONT_COLOR: '#ffffff'

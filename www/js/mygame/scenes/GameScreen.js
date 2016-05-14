@@ -1,4 +1,4 @@
-G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue) {
+G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, RulesOverlay) {
     "use strict";
 
     function GameScreen(services) {
@@ -47,7 +47,7 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue) {
             } else {
                 throw 'internal error: unhandled code branch';
             }
-        })
+        });
     };
 
     GameScreen.prototype.undoDown = function () {
@@ -67,12 +67,21 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue) {
     };
 
     GameScreen.prototype.rulesDown = function () {
-
     };
 
     GameScreen.prototype.rulesUp = function () {
+        if (this.__paused)
+            return;
+        if (this.__itIsOver)
+            return;
 
+        var rulesOverlayScene = new MVVMScene(this.services, this.services.scenes[Constants.RULES_OVERLAY], new RulesOverlay(this.services), Constants.RULES_OVERLAY);
+        this.__paused = true;
+        var self = this;
+        rulesOverlayScene.show(function () {
+            self.__paused = false;
+        });
     };
 
     return GameScreen;
-})(H5.MVVMScene, G.Constants, G.PauseScreen, G.PauseReturnValue);
+})(H5.MVVMScene, G.Constants, G.PauseScreen, G.PauseReturnValue, G.RulesOverlay);
