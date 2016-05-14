@@ -36,6 +36,13 @@ G.Constants = (function () {
 
         // defaults
         PRIMARY_FONT_COLOR: '#000000',
-        SECONDARY_FONT_COLOR: '#ffffff'
+        SECONDARY_FONT_COLOR: '#ffffff',
+
+        // game specific
+        MAX_NEIGHBORS: 6,
+        MIN_NEIGHBORS: 1,
+
+        // gui specific
+        MAX_RULES: 6
     };
 })();

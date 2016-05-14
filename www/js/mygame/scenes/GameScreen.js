@@ -51,7 +51,6 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
     };
 
     GameScreen.prototype.undoDown = function () {
-
     };
 
     GameScreen.prototype.undoUp = function () {
@@ -59,7 +58,6 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
     };
 
     GameScreen.prototype.nextDown = function () {
-
     };
 
     GameScreen.prototype.nextUp = function () {
@@ -74,8 +72,24 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
             return;
         if (this.__itIsOver)
             return;
-
-        var rulesOverlayScene = new MVVMScene(this.services, this.services.scenes[Constants.RULES_OVERLAY], new RulesOverlay(this.services), Constants.RULES_OVERLAY);
+        
+        var rules = [
+            {
+                id: 0,
+                type: 'dead',
+                value: 3,
+                operator: '=',
+                editable: true
+            }, {
+                id: 1,
+                type: 'alive',
+                value: 2,
+                operator: '<',
+                editable: true
+            }
+        ];
+        var rulesView = new RulesOverlay(this.services, rules, true);
+        var rulesOverlayScene = new MVVMScene(this.services, this.services.scenes[Constants.RULES_OVERLAY], rulesView, Constants.RULES_OVERLAY);
         this.__paused = true;
         var self = this;
         rulesOverlayScene.show(function () {
