@@ -7,20 +7,19 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
         this.__editable = editable;
 
         this.__addedNewRule = false;
+        this.__currentlyEditing = false;
     }
 
     RulesOverlay.prototype.postConstruct = function () {
-        var currentlyEditing = false;
-
+        this.__currentlyEditing = false;
+        var self = this;
         function setEditing(value) {
-            currentlyEditing = value;
+            self.__currentlyEditing = value;
         }
 
         function isEditing() {
-            return currentlyEditing;
+            return self.__currentlyEditing;
         }
-
-        var self = this;
 
         function deleteRule(rule) {
             var foundIt = self.rules.some(function (elem, i, rules) {
@@ -70,6 +69,8 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
     };
 
     RulesOverlay.prototype.backUp = function () {
+        if (this.__currentlyEditing)
+            return;
         this.nextScene();
     };
 
@@ -77,6 +78,8 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
     };
 
     RulesOverlay.prototype.addUp = function () {
+        if (this.__currentlyEditing)
+            return;
         if (!this.__editable)
             return;
 

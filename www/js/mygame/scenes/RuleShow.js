@@ -21,15 +21,12 @@ G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
         if (this.__isEditing())
             return;
 
-        if (!this.__immediateEditing) {
-            console.log('started manual editing id:' + this.ruleData.id);
-        }
-
         var ruleEditScene = new MVVMScene(this.services, this.services.scenes[Constants.RULE_EDIT], new RuleEdit(this.services, this.ruleData), Constants.RULE_EDIT);
         this.__setEditing(true);
         var self = this;
         ruleEditScene.show(function (state) {
             if (state == EditReturn.SAVE) {
+                self.__immediateEditing = false;
                 self.__setRule(self.ruleData);
             } else if (state == EditReturn.DELETE) {
                 self.__deleteRule(self.ruleData);
@@ -51,10 +48,8 @@ G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
 
         this.__setRule(this.ruleData);
 
-        if (this.__immediateEditing) {
-            console.log('started immediate editing id:' + this.ruleData.id);
+        if (this.__immediateEditing)
             this.editUp();
-        }
     };
 
     RuleShow.prototype.__setRule = function (rule) {

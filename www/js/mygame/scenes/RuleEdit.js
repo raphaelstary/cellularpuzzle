@@ -112,8 +112,6 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
             this.currentState.setFilled(true);
             this.nextState.setFilled(false).setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 2));
         }
-
-        console.log('started editing id:' + this.ruleData.id);
     };
 
     return RuleEdit;
