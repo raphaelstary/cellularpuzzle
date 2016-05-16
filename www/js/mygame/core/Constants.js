@@ -8,6 +8,7 @@ G.Constants = (function () {
     return {
         // files
         SCENE_FILE: 'data/scenes.json',
+        LEVELS_FILE: 'data/levels.json',
         FONT_FILE: 'data/webfont.woff',
         FONT_NAME: 'Calibri',
 

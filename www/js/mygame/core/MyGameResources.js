@@ -2,12 +2,13 @@ G.MyGameResources = (function (Constants, URL, addFontToDOM) {
     "use strict";
 
     // your files
-    var scenes, font;
+    var scenes, levels;
 
     function registerFiles(resourceLoader) {
         // add your files to the resource loader for downloading
         scenes = resourceLoader.addJSON(Constants.SCENE_FILE);
-        font = resourceLoader.addFont(Constants.FONT_FILE);
+        // font = resourceLoader.addFont(Constants.FONT_FILE);
+        levels = resourceLoader.addJSON(Constants.LEVELS_FILE);
 
         return resourceLoader.getCount(); // number of registered files
     }
@@ -25,7 +26,8 @@ G.MyGameResources = (function (Constants, URL, addFontToDOM) {
         // }
         return {
             // services created with downloaded files
-            scenes: scenes
+            scenes: scenes,
+            levels: levels
         };
     }
 
