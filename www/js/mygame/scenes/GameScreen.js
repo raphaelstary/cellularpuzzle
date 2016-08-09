@@ -24,9 +24,11 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         // clean up level stuff
     };
 
+    //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.backDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.backUp = function () {
         if (this.__paused)
             return;
@@ -50,29 +52,35 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         });
     };
 
+    //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.undoDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.undoUp = function () {
 
     };
 
+    //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.nextDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.nextUp = function () {
 
     };
 
+    //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.rulesDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.rulesUp = function () {
         if (this.__paused)
             return;
         if (this.__itIsOver)
             return;
-        
+
         var rules = [
             {
                 id: 0,

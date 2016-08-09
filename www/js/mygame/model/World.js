@@ -19,7 +19,7 @@ G.World = (function () {
         var changeSet = this.history.pop();
         changeSet.forEach(updateToPreviousState);
     };
-    
+
     World.prototype.__calcNextState = function (cell) {
         var nextState = this.__decideNextState(cell);
         if (nextState != cell.state) {
@@ -30,7 +30,7 @@ G.World = (function () {
             };
         }
     };
-    
+
     function updateToNextState(change) {
         // todo update view
         change.reference.state = change.nextState;
@@ -44,5 +44,6 @@ G.World = (function () {
     function notUndefined(change) {
         return change;
     }
+
     return World;
 })();

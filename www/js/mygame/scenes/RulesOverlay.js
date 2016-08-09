@@ -13,6 +13,7 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
     RulesOverlay.prototype.postConstruct = function () {
         this.__currentlyEditing = false;
         var self = this;
+
         function setEditing(value) {
             self.__currentlyEditing = value;
         }
@@ -36,9 +37,10 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
         }
 
         function createRuleView(rule, index) {
+            //noinspection JSPotentiallyInvalidUsageOfThis
             var activateEditMode = this.__addedNewRule && rule.id === this.__newRuleId;
             var ruleView = new RuleShow(this.services, rule, setEditing, isEditing, deleteRule, activateEditMode);
-            
+
             var ruleSubScene = new MVVMScene(this.services, this.services.scenes[Constants.RULE_SHOW], ruleView, Constants.RULE_SHOW, Constants.DEFAULT_SCENE_RECT, Width.HALF, Height.get(
                 8, index + 1));
             ruleSubScene.show();
@@ -54,7 +56,7 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
         }
 
         this.__editable = this.rules.length < Constants.MAX_RULES;
-        
+
         if (!this.__editable)
             this.addTxt.hide();
     };
@@ -65,18 +67,22 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
         })
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RulesOverlay.prototype.backDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RulesOverlay.prototype.backUp = function () {
         if (this.__currentlyEditing)
             return;
         this.nextScene();
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RulesOverlay.prototype.addDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RulesOverlay.prototype.addUp = function () {
         if (this.__currentlyEditing)
             return;
@@ -94,7 +100,7 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
 
         this.__addedNewRule = true;
         this.__newRuleId = magicId;
-        
+
         this.restartScene();
     };
 

@@ -16,7 +16,7 @@ G.RuleEngine = (function (RuleOperator, RuleType) {
 
             if (!isMatch(rule, neighborCount))
                 return false;
-            
+
             nextState = rule.type;
             return true;
         });

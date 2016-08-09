@@ -11,9 +11,11 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
         }
     }
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.swapDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.swapUp = function () {
         if (this.rule.type == 'dead') {
             this.rule.type = 'alive';
@@ -27,9 +29,11 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
         }
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.nextOpDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.nextOpUp = function () {
         this.rule.operator = this.nextOp.data.msg;
 
@@ -38,9 +42,11 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
         this.ruleOperator.setText(this.rule.operator);
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.prevOpDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.prevOpUp = function () {
         this.rule.operator = this.prevOp.data.msg;
 
@@ -49,9 +55,11 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
         this.ruleOperator.setText(this.rule.operator);
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.moreDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.moreUp = function () {
         if (this.rule.value >= Constants.MAX_NEIGHBORS)
             return;
@@ -59,9 +67,11 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
         this.ruleValue.setText(++this.rule.value);
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.lessDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.lessUp = function () {
         if (this.rule.value <= Constants.MIN_NEIGHBORS)
             return;
@@ -69,29 +79,35 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
         this.ruleValue.setText(--this.rule.value);
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.removeDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.removeUp = function () {
         this.nextScene(EditReturn.DELETE);
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.cancelDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.cancelUp = function () {
         this.nextScene(EditReturn.ABORT);
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.okDown = function () {
     };
 
+    //noinspection JSUnusedGlobalSymbols
     RuleEdit.prototype.okUp = function () {
         this.ruleData.type = this.rule.type;
         this.ruleData.value = this.rule.value;
         this.ruleData.operator = this.rule.operator;
         this.ruleData.editable = this.rule.editable;
-        
+
         this.nextScene(EditReturn.SAVE);
     };
 
