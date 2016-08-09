@@ -1,6 +1,7 @@
 G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Height) {
     "use strict";
 
+    /** @property addTxt */
     function RulesOverlay(services, rules, editable) {
         this.services = services;
         this.rules = rules;
@@ -10,6 +11,7 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
         this.__currentlyEditing = false;
     }
 
+    /** @this RulesOverlay */
     RulesOverlay.prototype.postConstruct = function () {
         this.__currentlyEditing = false;
         var self = this;
@@ -72,6 +74,7 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
     };
 
     //noinspection JSUnusedGlobalSymbols
+    /** @this ViewModel */
     RulesOverlay.prototype.backUp = function () {
         if (this.__currentlyEditing)
             return;
@@ -83,6 +86,7 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
     };
 
     //noinspection JSUnusedGlobalSymbols
+    /** @this ViewModel */
     RulesOverlay.prototype.addUp = function () {
         if (this.__currentlyEditing)
             return;

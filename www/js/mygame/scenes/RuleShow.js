@@ -1,6 +1,13 @@
 G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
     "use strict";
 
+    /**
+     * @property edit
+     * @property ruleOperator
+     * @property ruleValue
+     * @property currentState
+     * @property nextState
+     */
     function RuleShow(services, rule, setEditing, isEditing, deleteRule, immediateEditing) {
         this.services = services;
         this.ruleData = rule;
@@ -12,6 +19,7 @@ G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
         this.__init();
     }
 
+    //noinspection JSUnusedGlobalSymbols
     RuleShow.prototype.editDown = function () {
     };
 
@@ -21,7 +29,7 @@ G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
         if (this.__isEditing())
             return;
 
-        var ruleEditScene = new MVVMScene(this.services, this.services.scenes[Constants.RULE_EDIT], new RuleEdit(this.services, this.ruleData), Constants.RULE_EDIT);
+        var ruleEditScene = new MVVMScene(this.services, this.services.scenes[Constants.RULE_EDIT], new RuleEdit(this.ruleData), Constants.RULE_EDIT);
         this.__setEditing(true);
         var self = this;
         ruleEditScene.show(function (state) {
@@ -38,6 +46,7 @@ G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
         });
     };
 
+    /** @this RuleShow */
     RuleShow.prototype.postConstruct = function () {
         this.__init();
 
@@ -52,6 +61,7 @@ G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
             this.editUp();
     };
 
+    /** @this RuleShow */
     RuleShow.prototype.__setRule = function (rule) {
         this.ruleOperator.setText(rule.operator);
         this.ruleValue.setText(rule.value);

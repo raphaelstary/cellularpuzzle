@@ -5,6 +5,7 @@ G.Constants = (function () {
     var SCENE_WIDTH = 750;
     var SCENE_HEIGHT = 1334;
 
+    //noinspection SpellCheckingInspection
     return {
         // files
         SCENE_FILE: 'data/scenes.json',

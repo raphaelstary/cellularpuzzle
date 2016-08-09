@@ -52,7 +52,8 @@ G.LevelOverview = (function (Width, Height, Event, Constants, Font, Math, MVVMSc
                             level: levelNr
                         });
 
-                        var gameScene = new MVVMScene(self.services, self.services.scenes[Constants.GAME_SCREEN], new GameScreen(self.services), Constants.GAME_SCREEN);
+                        var game = new GameScreen(self.services, self.services.levels[levelNr]);
+                        var gameScene = new MVVMScene(self.services, self.services.scenes[Constants.GAME_SCREEN], game, Constants.GAME_SCREEN);
                         self.sceneStorage.currentLevel = levelNr;
                         gameScene.show(resume);
 

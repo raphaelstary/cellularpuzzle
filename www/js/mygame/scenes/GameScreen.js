@@ -1,9 +1,10 @@
 G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, RulesOverlay) {
     "use strict";
 
-    function GameScreen(services) {
+    function GameScreen(services, level) {
         this.stage = services.stage;
 
+        this.level = level;
         this.services = services;
 
         this.__init();

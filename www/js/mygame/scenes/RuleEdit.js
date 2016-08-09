@@ -1,7 +1,15 @@
 G.RuleEdit = (function (Font, EditReturn, Constants) {
     "use strict";
 
-    function RuleEdit(services, rule) {
+    /**
+     * @property currentState
+     * @property nextState
+     * @property nextOp
+     * @property prevOp
+     * @property ruleOperator
+     * @property ruleValue
+     */
+    function RuleEdit(rule) {
         this.ruleData = rule;
         this.rule = {
             type: rule.type,
@@ -16,6 +24,7 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
     };
 
     //noinspection JSUnusedGlobalSymbols
+    /** @this RuleEdit */
     RuleEdit.prototype.swapUp = function () {
         if (this.rule.type == 'dead') {
             this.rule.type = 'alive';
@@ -34,6 +43,7 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
     };
 
     //noinspection JSUnusedGlobalSymbols
+    /** @this RuleEdit */
     RuleEdit.prototype.nextOpUp = function () {
         this.rule.operator = this.nextOp.data.msg;
 
@@ -47,6 +57,7 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
     };
 
     //noinspection JSUnusedGlobalSymbols
+    /** @this RuleEdit */
     RuleEdit.prototype.prevOpUp = function () {
         this.rule.operator = this.prevOp.data.msg;
 
@@ -60,6 +71,7 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
     };
 
     //noinspection JSUnusedGlobalSymbols
+    /** @this RuleEdit */
     RuleEdit.prototype.moreUp = function () {
         if (this.rule.value >= Constants.MAX_NEIGHBORS)
             return;
@@ -72,6 +84,7 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
     };
 
     //noinspection JSUnusedGlobalSymbols
+    /** @this RuleEdit */
     RuleEdit.prototype.lessUp = function () {
         if (this.rule.value <= Constants.MIN_NEIGHBORS)
             return;
@@ -84,6 +97,7 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
     };
 
     //noinspection JSUnusedGlobalSymbols
+    /** @this ViewModel */
     RuleEdit.prototype.removeUp = function () {
         this.nextScene(EditReturn.DELETE);
     };
@@ -93,6 +107,7 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
     };
 
     //noinspection JSUnusedGlobalSymbols
+    /** @this ViewModel */
     RuleEdit.prototype.cancelUp = function () {
         this.nextScene(EditReturn.ABORT);
     };
@@ -102,6 +117,7 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
     };
 
     //noinspection JSUnusedGlobalSymbols
+    /** @this ViewModel */
     RuleEdit.prototype.okUp = function () {
         this.ruleData.type = this.rule.type;
         this.ruleData.value = this.rule.value;
@@ -111,6 +127,7 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
         this.nextScene(EditReturn.SAVE);
     };
 
+    /** @this RuleEdit */
     RuleEdit.prototype.postConstruct = function () {
         this.ruleOperator.setText(this.ruleData.operator);
 
