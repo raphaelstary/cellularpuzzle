@@ -129,10 +129,12 @@ G.LevelOverview = (function (Width, Height, Event, Constants, Font, Math, MVVMSc
         }
     };
 
+    //noinspection JSUnusedGlobalSymbols
     LevelOverview.prototype.backDown = function () {
-
     };
 
+    //noinspection JSUnusedGlobalSymbols
+    /** @this ViewModel */
     LevelOverview.prototype.backUp = function () {
         this.nextScene();
     };
