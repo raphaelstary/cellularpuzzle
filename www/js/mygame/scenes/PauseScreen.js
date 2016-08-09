@@ -5,7 +5,6 @@ G.PauseScreen = (function (PauseReturnValue) {
     }
 
     PauseScreen.prototype.resumeDown = function () {
-
     };
 
     PauseScreen.prototype.resumeUp = function () {
@@ -13,7 +12,6 @@ G.PauseScreen = (function (PauseReturnValue) {
     };
 
     PauseScreen.prototype.restartDown = function () {
-
     };
 
     PauseScreen.prototype.restartUp = function () {
@@ -21,7 +19,6 @@ G.PauseScreen = (function (PauseReturnValue) {
     };
 
     PauseScreen.prototype.exitDown = function () {
-
     };
 
     PauseScreen.prototype.exitUp = function () {
