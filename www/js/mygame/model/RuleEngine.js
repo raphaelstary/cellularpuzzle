@@ -14,8 +14,7 @@ G.RuleEngine = (function (RuleOperator, RuleType) {
             if (cell.state == rule.type)
                 return false;
 
-            var isRuleAMatch = isMatch(rule, neighborCount);
-            if (!isRuleAMatch)
+            if (!isMatch(rule, neighborCount))
                 return false;
             
             nextState = rule.type;
