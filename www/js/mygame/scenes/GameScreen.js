@@ -1,8 +1,10 @@
-G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, RulesOverlay) {
+G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, RulesOverlay, Rule, RuleType,
+    RuleOperator, RuleEngine, createCells, HexViewHelper, zero, WorldView, World, Width, Height, changeSign) {
     "use strict";
 
     function GameScreen(services, level) {
         this.stage = services.stage;
+        this.device = services.device;
 
         this.level = level;
         this.services = services;
@@ -19,6 +21,16 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         this.__init();
 
         // init level
+        var rules = [
+            new Rule(0, RuleType.DEAD, 3, RuleOperator.EQUAL_TO, true),
+            new Rule(1, RuleType.ALIVE, 2, RuleOperator.LESS_THAN, true)
+        ];
+        var ruleEngine = new RuleEngine(rules);
+        var cells = createCells(this.level.nodes, this.level.edges);
+        var hexViewHelper = new HexViewHelper(this.stage, 3, 3, changeSign(Width.get(6)), Height.get(5));
+        var view = new WorldView(this.stage, hexViewHelper, this.level.nodes, this.level.edges);
+        var world = new World(ruleEngine.decideNextState.bind(ruleEngine), cells, view);
+        view.init();
     };
 
     GameScreen.prototype.preDestroy = function () {
@@ -107,4 +119,5 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
     };
 
     return GameScreen;
-})(H5.MVVMScene, G.Constants, G.PauseScreen, G.PauseReturnValue, G.RulesOverlay);
+})(H5.MVVMScene, G.Constants, G.PauseScreen, G.PauseReturnValue, G.RulesOverlay, G.Rule, G.RuleType, G.RuleOperator,
+    G.RuleEngine, G.createCells, H5.HexViewHelper, H5.zero, G.WorldView, G.World, H5.Width, H5.Height, H5.changeSign);

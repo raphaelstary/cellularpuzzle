@@ -17,6 +17,11 @@ H5.renderCircle = (function (Math) {
             ctx.strokeStyle = drawable.data.color;
             ctx.stroke();
         }
+
+        if (drawable.data.lineColor) {
+            ctx.strokeStyle = drawable.data.lineColor;
+            ctx.stroke();
+        }
     }
 
     return renderCircle;
