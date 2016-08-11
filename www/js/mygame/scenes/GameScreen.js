@@ -86,14 +86,23 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
     GameScreen.prototype.__updateRuleSummary = function () {
         var aliveSummary = summarize(this.rules, isAlive);
         this.aliveRule.setText(aliveSummary.text);
-        if (aliveSummary.number > 3)
+
+        if (aliveSummary.number > 3) {
             this.aliveRule.setSize(Font.get(Constants.DEFAULT_SCENE_HEIGHT,
                 40 - aliveSummary.number * (1.1 + aliveSummary.number * 0.25)));
+        } else {
+            this.aliveRule.setSize(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 48));
+        }
+
         var deadSummary = summarize(this.rules, isDead);
         this.deadRule.setText(deadSummary.text);
-        if (deadSummary.number > 3)
+
+        if (deadSummary.number > 3) {
             this.deadRule.setSize(
                 Font.get(Constants.DEFAULT_SCENE_HEIGHT, 40 - deadSummary.number * (1.1 + deadSummary.number * 0.25)));
+        } else {
+            this.deadRule.setSize(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 48));
+        }
     };
 
     GameScreen.prototype.postConstruct = function () {
