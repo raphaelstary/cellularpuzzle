@@ -100,9 +100,7 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
 
     //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.backUp = function () {
-        if (this.__paused)
-            return;
-        if (this.__itIsOver)
+        if (this.__paused || this.__itIsOver)
             return;
 
         var pauseScene = new MVVMScene(this.services, this.services.scenes[Constants.PAUSE_SCREEN], new PauseScreen(this.services), Constants.PAUSE_SCREEN);
@@ -128,6 +126,8 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
 
     //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.undoUp = function () {
+        if (this.__paused || this.__itIsOver)
+            return;
         this.world.previousStep();
     };
 
@@ -137,6 +137,8 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
 
     //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.nextUp = function () {
+        if (this.__paused || this.__itIsOver)
+            return;
         this.world.nextStep();
     };
 
@@ -146,9 +148,7 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
 
     //noinspection JSUnusedGlobalSymbols
     GameScreen.prototype.rulesUp = function () {
-        if (this.__paused)
-            return;
-        if (this.__itIsOver)
+        if (this.__paused || this.__itIsOver)
             return;
 
         var rulesView = new RulesOverlay(this.services, this.rules, true);
