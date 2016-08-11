@@ -1,5 +1,6 @@
 G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, RulesOverlay, Rule, RuleType,
-    RuleOperator, RuleEngine, HexViewHelper, zero, WorldView, World, Width, Height, changeSign, Cell, iterateEntries) {
+    RuleOperator, RuleEngine, HexViewHelper, zero, WorldView, World, Width, Height, changeSign, Cell, iterateEntries,
+    Font) {
     "use strict";
 
     /**
@@ -56,7 +57,11 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
     }
 
     function summarize(rules, hasType) {
-        return rules.filter(hasType).sort(compare).filter(notSame).map(toString).join(',');
+        var filteredRules = rules.filter(hasType).sort(compare).filter(notSame);
+        return {
+            number: filteredRules.length,
+            text: filteredRules.map(toString).join(',')
+        }
     }
 
     function createCells(nodes, edges, nodeDrawables) {
@@ -79,8 +84,16 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
 
     /** @this GameScreen */
     GameScreen.prototype.__updateRuleSummary = function () {
-        this.aliveRule.setText(summarize(this.rules, isAlive));
-        this.deadRule.setText(summarize(this.rules, isDead));
+        var aliveSummary = summarize(this.rules, isAlive);
+        this.aliveRule.setText(aliveSummary.text);
+        if (aliveSummary.number > 3)
+            this.aliveRule.setSize(Font.get(Constants.DEFAULT_SCENE_HEIGHT,
+                40 - aliveSummary.number * (1.1 + aliveSummary.number * 0.25)));
+        var deadSummary = summarize(this.rules, isDead);
+        this.deadRule.setText(deadSummary.text);
+        if (deadSummary.number > 3)
+            this.deadRule.setSize(
+                Font.get(Constants.DEFAULT_SCENE_HEIGHT, 40 - deadSummary.number * (1.1 + deadSummary.number * 0.25)));
     };
 
     GameScreen.prototype.postConstruct = function () {
@@ -174,4 +187,4 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
     return GameScreen;
 })(H5.MVVMScene, G.Constants, G.PauseScreen, G.PauseReturnValue, G.RulesOverlay, G.Rule, G.RuleType, G.RuleOperator,
     G.RuleEngine, H5.HexViewHelper, H5.zero, G.WorldView, G.World, H5.Width, H5.Height, H5.changeSign, G.Cell,
-    H5.iterateEntries);
+    H5.iterateEntries, H5.Font);
