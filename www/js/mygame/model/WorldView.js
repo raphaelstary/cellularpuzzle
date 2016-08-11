@@ -76,6 +76,18 @@ G.WorldView = (function (iterateEntries, RuleType, Constants, Font, wrap, Math, 
         };
     };
 
+    WorldView.prototype.highlightGoalState = function (drawable) {
+
+    };
+
+    WorldView.prototype.highlightRightState = function (drawable) {
+
+    };
+
+    WorldView.prototype.highlightWrongState = function (drawable) {
+
+    };
+
     WorldView.prototype.preDestroy = function () {
         this.drawables.forEach(function (drawable) {
             drawable.remove();
@@ -83,22 +95,35 @@ G.WorldView = (function (iterateEntries, RuleType, Constants, Font, wrap, Math, 
     };
 
     WorldView.prototype.makeAlive = function (drawable) {
+        drawable.pendingState = RuleType.ALIVE;
         this.timer.doLater(function () {
+            if (drawable.pendingState != RuleType.ALIVE)
+                return;
+            delete drawable.pendingState;
             drawable.scalePattern(beatPattern, true);
         }, range(1, 15));
     };
 
-    WorldView.prototype.simpleUpdate = function (drawable, state) {
-        drawable.setColor(isAlive(state) ? 'black' : 'white');
+    WorldView.prototype.stopAlive = function (drawable) {
+        drawable.pause();
+        delete drawable.pendingState;
     };
 
     WorldView.prototype.update = function (drawable, state, cellIndex) {
         drawable.pause();
+        drawable.setScale(1);
         drawable.setColor(isAlive(state) ? 'black' : 'white');
+
         if (isAlive(state)) {
+            drawable.pendingState = RuleType.ALIVE;
             this.timer.doLater(function () {
+                if (drawable.pendingState != RuleType.ALIVE)
+                    return;
+                delete drawable.pendingState;
                 drawable.scalePattern(beatPattern, true);
             }, range(cellIndex, cellIndex * 15));
+        } else {
+            delete drawable.pendingState;
         }
     };
 

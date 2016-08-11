@@ -40,8 +40,8 @@ G.World = (function () {
         change.reference.state = change.nextState;
     }
 
-    function updateToPreviousState(change) {
-        this.view.simpleUpdate(change.reference.drawable, change.previousState);
+    function updateToPreviousState(change, index) {
+        this.view.update(change.reference.drawable, change.previousState, index);
         change.reference.state = change.previousState;
     }
 

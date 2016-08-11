@@ -72,14 +72,14 @@ G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
             this.nextState.setFilled(false).setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 2));
             if (!this.__immediateEditing) {
                 this.animationView.makeAlive(this.currentState);
-                this.nextState.pause();
+                this.animationView.stopAlive(this.nextState);
             }
         } else {
             this.currentState.setFilled(false).setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 2));
             this.nextState.setFilled(true);
             if (!this.__immediateEditing) {
                 this.animationView.makeAlive(this.nextState);
-                this.currentState.pause();
+                this.animationView.stopAlive(this.currentState);
             }
         }
     };
