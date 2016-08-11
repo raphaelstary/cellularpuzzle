@@ -49,8 +49,14 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         return 0;
     }
 
+    function notSame(rule, index, rules) {
+        if (index === 0)
+            return true;
+        return compare(rules[index - 1], rule) !== 0;
+    }
+
     function summarize(rules, hasType) {
-        return rules.filter(hasType).sort(compare).map(toString).join(',');
+        return rules.filter(hasType).sort(compare).filter(notSame).map(toString).join(',');
     }
 
     function createCells(nodes, edges, nodeDrawables) {
@@ -72,13 +78,17 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
     }
 
     /** @this GameScreen */
+    GameScreen.prototype.__updateRuleSummary = function () {
+        this.aliveRule.setText(summarize(this.rules, isAlive));
+        this.deadRule.setText(summarize(this.rules, isDead));
+    };
+
     GameScreen.prototype.postConstruct = function () {
         this.__init();
 
         // init level
         this.rules = this.level.rules.map(toRule);
-        this.aliveRule.setText(summarize(this.rules, isAlive));
-        this.deadRule.setText(summarize(this.rules, isDead));
+        this.__updateRuleSummary();
         var ruleEngine = new RuleEngine(this.rules);
 
         var hexViewHelper = new HexViewHelper(this.stage, 3, 3, changeSign(Width.get(6)), Height.get(5));
@@ -157,6 +167,7 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         var self = this;
         rulesOverlayScene.show(function () {
             self.__paused = false;
+            self.__updateRuleSummary();
         });
     };
 
