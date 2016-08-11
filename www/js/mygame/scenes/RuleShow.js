@@ -1,4 +1,4 @@
-G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
+G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn, RuleType) {
     "use strict";
 
     /**
@@ -67,7 +67,7 @@ G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
         this.ruleOperator.setText(rule.operator);
         this.ruleValue.setText(rule.value);
 
-        if (rule.type == 'dead') {
+        if (rule.type == RuleType.DEAD) {
             this.currentState.setFilled(true);
             this.nextState.setFilled(false).setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 2));
             if (!this.__immediateEditing) {
@@ -89,4 +89,4 @@ G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
     };
 
     return RuleShow;
-})(H5.Font, G.Constants, H5.MVVMScene, G.RuleEdit, G.EditReturn);
+})(H5.Font, G.Constants, H5.MVVMScene, G.RuleEdit, G.EditReturn, G.RuleType);

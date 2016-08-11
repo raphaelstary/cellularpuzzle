@@ -1,4 +1,4 @@
-G.RuleEdit = (function (Font, EditReturn, Constants) {
+G.RuleEdit = (function (Font, EditReturn, Constants, RuleType, RuleOperator) {
     "use strict";
 
     /**
@@ -26,13 +26,13 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
     //noinspection JSUnusedGlobalSymbols
     /** @this RuleEdit */
     RuleEdit.prototype.swapUp = function () {
-        if (this.rule.type == 'dead') {
-            this.rule.type = 'alive';
+        if (this.rule.type == RuleType.DEAD) {
+            this.rule.type = RuleType.ALIVE;
             this.currentState.setFilled(false).setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 2));
             this.nextState.setFilled(true);
 
         } else {
-            this.rule.type = 'dead';
+            this.rule.type = RuleType.DEAD;
             this.currentState.setFilled(true);
             this.nextState.setFilled(false).setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 2));
         }
@@ -131,21 +131,21 @@ G.RuleEdit = (function (Font, EditReturn, Constants) {
     RuleEdit.prototype.postConstruct = function () {
         this.ruleOperator.setText(this.ruleData.operator);
 
-        if (this.ruleData.operator == '<') {
-            this.nextOp.setText('>');
-            this.prevOp.setText('=');
-        } else if (this.ruleData.operator == '>') {
-            this.nextOp.setText('=');
-            this.prevOp.setText('<');
+        if (this.ruleData.operator == RuleOperator.LESS_THAN) {
+            this.nextOp.setText(RuleOperator.GREATER_THAN);
+            this.prevOp.setText(RuleOperator.EQUAL_TO);
+        } else if (this.ruleData.operator == RuleOperator.GREATER_THAN) {
+            this.nextOp.setText(RuleOperator.EQUAL_TO);
+            this.prevOp.setText(RuleOperator.LESS_THAN);
         }
 
         this.ruleValue.setText(this.ruleData.value);
 
-        if (this.ruleData.type == 'dead') {
+        if (this.ruleData.type == RuleType.DEAD) {
             this.currentState.setFilled(true);
             this.nextState.setFilled(false).setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 2));
         }
     };
 
     return RuleEdit;
-})(H5.Font, G.EditReturn, G.Constants);
+})(H5.Font, G.EditReturn, G.Constants, G.RuleType, G.RuleOperator);
