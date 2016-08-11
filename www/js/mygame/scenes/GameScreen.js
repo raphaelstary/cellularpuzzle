@@ -1,6 +1,5 @@
-G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, RulesOverlay, Rule, RuleType,
-    RuleOperator, RuleEngine, HexViewHelper, zero, WorldView, World, Width, Height, changeSign, Cell, iterateEntries,
-    Font) {
+G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, RulesOverlay, RuleEngine, HexViewHelper,
+    WorldView, World, Width, Height, changeSign, Font, Rules) {
     "use strict";
 
     /**
@@ -25,69 +24,9 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         this.__itIsOver = false;
     };
 
-    function toRule(rule, i) {
-        return new Rule(i, rule.type, rule.value, rule.operator, rule.editable)
-    }
-
-    function toString(rule) {
-        return rule.operator + rule.value;
-    }
-
-    function isAlive(rule) {
-        return rule.type == RuleType.ALIVE;
-    }
-
-    function isDead(rule) {
-        return rule.type == RuleType.DEAD;
-    }
-
-    function compare(ruleA, ruleB) {
-        var returnValue = ruleA.value - ruleB.value;
-        if (returnValue !== 0)
-            return returnValue;
-
-        if (ruleA.operator < ruleB.operator)
-            return -1;
-        if (ruleA.operator > ruleB.operator)
-            return 1;
-        return 0;
-    }
-
-    function notSame(rule, index, rules) {
-        if (index === 0)
-            return true;
-        return compare(rules[index - 1], rule) !== 0;
-    }
-
-    function summarize(rules, hasType) {
-        var filteredRules = rules.filter(hasType).sort(compare).filter(notSame);
-        return {
-            number: filteredRules.length,
-            text: filteredRules.map(toString).join(',')
-        }
-    }
-
-    function createCells(nodes, edges, nodeDrawables) {
-        var cellDict = {};
-        iterateEntries(nodes, function (node, key) {
-            cellDict[key] = new Cell(node.state, nodeDrawables[key], []);
-        });
-        edges.forEach(function (edge) {
-            var refA = edge[0];
-            var refB = edge[1];
-            var a = cellDict[refA];
-            var b = cellDict[refB];
-            a.neighbors.push(b);
-            b.neighbors.push(a);
-        });
-        return Object.keys(cellDict).map(function (key) {
-            return cellDict[key];
-        })
-    }
-
     /** @this GameScreen */
     GameScreen.prototype.__updateRuleSummary = function () {
-        var aliveSummary = summarize(this.rules, isAlive);
+        var aliveSummary = Rules.summarize(this.rules, Rules.isAlive);
         this.aliveRule.setText(aliveSummary.text);
 
         if (aliveSummary.number > 3) {
@@ -97,7 +36,7 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
             this.aliveRule.setSize(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 48));
         }
 
-        var deadSummary = summarize(this.rules, isDead);
+        var deadSummary = Rules.summarize(this.rules, Rules.isDead);
         this.deadRule.setText(deadSummary.text);
 
         if (deadSummary.number > 3) {
@@ -113,16 +52,16 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         this.__init();
 
         // init level
-        this.rules = this.level.rules.map(toRule);
+        this.rules = this.level.rules.map(Rules.toRule);
         this.__updateRuleSummary();
-        var ruleEngine = new RuleEngine(this.rules);
+        this.ruleEngine = new RuleEngine(this.rules);
 
         var hexViewHelper = new HexViewHelper(this.stage, 3, 3, changeSign(Width.get(6)), Height.get(5));
         this.view = new WorldView(this.stage, this.timer, hexViewHelper, this.level.nodes, this.level.edges);
 
         var drawables = this.view.init();
-        var cells = createCells(this.level.nodes, this.level.edges, drawables.nodes);
-        this.world = new World(ruleEngine.decideNextState.bind(ruleEngine), cells, this.view);
+        var cells = Rules.createCells(this.level.nodes, this.level.edges, drawables.nodes);
+        this.world = new World(this.ruleEngine.decideNextState.bind(this.ruleEngine), cells, this.view);
 
         this.timer.doLater(this.view.makeAlive.bind(this.view, this.aliveState), 45);
     };
@@ -195,11 +134,13 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         var self = this;
         rulesOverlayScene.show(function () {
             self.__paused = false;
+            self.ruleEngine.rules = self.rules = self.rules.filter(Rules.isAlive).sort(Rules.compare)
+                .filter(Rules.notSame)
+                .concat(self.rules.filter(Rules.isDead).sort(Rules.compare).filter(Rules.notSame));
             self.__updateRuleSummary();
         });
     };
 
     return GameScreen;
-})(H5.MVVMScene, G.Constants, G.PauseScreen, G.PauseReturnValue, G.RulesOverlay, G.Rule, G.RuleType, G.RuleOperator,
-    G.RuleEngine, H5.HexViewHelper, H5.zero, G.WorldView, G.World, H5.Width, H5.Height, H5.changeSign, G.Cell,
-    H5.iterateEntries, H5.Font);
+})(H5.MVVMScene, G.Constants, G.PauseScreen, G.PauseReturnValue, G.RulesOverlay, G.RuleEngine, H5.HexViewHelper,
+    G.WorldView, G.World, H5.Width, H5.Height, H5.changeSign, H5.Font, G.Rules);
