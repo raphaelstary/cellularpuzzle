@@ -60,10 +60,33 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         this.view = new WorldView(this.stage, this.timer, hexViewHelper, this.level.nodes, this.level.edges);
 
         var drawables = this.view.init();
-        var cells = Rules.createCells(this.level.nodes, this.level.edges, drawables.nodes);
+        var cells = Rules.createCells(this.level.nodes, this.level.edges, drawables.nodes, this.level.goals);
         this.world = new World(this.ruleEngine.decideNextState.bind(this.ruleEngine), cells, this.view);
 
         this.timer.doLater(this.view.makeAlive.bind(this.view, this.aliveState), 45);
+
+        var goalStates = this.level.goals.map(function (goal) {
+            return drawables.nodes[goal];
+        });
+
+        var highlightGoalStates = this.view.highlightGoalStates.bind(this.view, goalStates);
+
+        // var counter = 0;
+        // var doItAgain = function (promise) {
+        //     if (++counter > 1)
+        //         return;
+        //
+        //     if (promise.isOver) {
+        //         highlightGoalStates().forEach(doItAgain);
+        //     } else {
+        //         promise.callback = function () {
+        //             highlightGoalStates().forEach(doItAgain);
+        //         }
+        //     }
+        // };
+        // highlightGoalStates().forEach(doItAgain);
+
+        highlightGoalStates();
     };
 
     GameScreen.prototype.preDestroy = function () {

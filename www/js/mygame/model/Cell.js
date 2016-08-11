@@ -5,6 +5,7 @@ G.Cell = (function () {
         this.state = state;
         this.drawable = drawable;
         this.neighbors = neighbors;
+        this.isGoal = false;
     }
 
     return Cell;

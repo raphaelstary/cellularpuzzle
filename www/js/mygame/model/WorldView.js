@@ -34,10 +34,11 @@ G.WorldView = (function (iterateEntries, RuleType, Constants, Font, wrap, Math, 
         }
     ];
 
+    function radius(width) {
+        return Math.floor(this.hexViewHelper.getWidth(width) / 5);
+    }
+
     WorldView.prototype.init = function () {
-        function radius(width) {
-            return Math.floor(this.hexViewHelper.getWidth(width) / 5);
-        }
 
         var nodes = {};
         iterateEntries(this.nodes, function (node, key) {
@@ -76,16 +77,68 @@ G.WorldView = (function (iterateEntries, RuleType, Constants, Font, wrap, Math, 
         };
     };
 
-    WorldView.prototype.highlightGoalState = function (drawable) {
+    WorldView.prototype.__createCircle = function (drawable, color) {
+        return this.stage.createCircle()
+            .setPosition(wrap(drawable, 'x'), wrap(drawable, 'y'), [drawable])
+            .setRadius(radius.bind(this))
+            .setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 1))
+            .setColor(color)
+            .setZIndex(2);
+    };
 
+    var SCALE_MAX = 2;
+    var DURATION = 30;
+
+    WorldView.prototype.__scale = function (drawable, callback) {
+        drawable.scaleTo(SCALE_MAX).setDuration(DURATION).setCallback(function () {
+            drawable.remove();
+            if (callback)
+                callback();
+        });
+    };
+    WorldView.prototype.__highlight = function (color, drawable) {
+        var one = this.__createCircle(drawable, color);
+        var two = this.__createCircle(drawable, color);
+        var three = this.__createCircle(drawable, color);
+        var four = this.__createCircle(drawable, color);
+        var five = this.__createCircle(drawable, color);
+        var six = this.__createCircle(drawable, color);
+
+        var promise = {
+            isOver: false,
+            callback: undefined
+        };
+
+        function callback() {
+            promise.isOver = true;
+            if (promise.callback)
+                promise.callback();
+        }
+
+        this.__scale(one);
+        this.timer.doLater(this.__scale.bind(undefined, two), 5);
+        this.timer.doLater(this.__scale.bind(undefined, three), 10);
+        this.timer.doLater(this.__scale.bind(undefined, four), 60);
+        this.timer.doLater(this.__scale.bind(undefined, five), 65);
+        this.timer.doLater(this.__scale.bind(undefined, six, callback), 70);
+
+        return promise;
+    };
+
+    WorldView.prototype.highlightGoalStates = function (drawables) {
+        return drawables.map(this.__highlight.bind(this, 'black'));
+    };
+
+    WorldView.prototype.highlightGoalState = function (drawable) {
+        return this.__highlight('black', drawable);
     };
 
     WorldView.prototype.highlightRightState = function (drawable) {
-
+        return this.__highlight('green', drawable);
     };
 
     WorldView.prototype.highlightWrongState = function (drawable) {
-
+        return this.__highlight('red', drawable);
     };
 
     WorldView.prototype.preDestroy = function () {

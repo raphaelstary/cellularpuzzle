@@ -39,10 +39,13 @@ G.Rules = (function (Object, iterateEntries, RuleType, Rule, Cell) {
         }
     }
 
-    function createCells(nodes, edges, nodeDrawables) {
+    function createCells(nodes, edges, nodeDrawables, goals) {
         var cellDict = {};
         iterateEntries(nodes, function (node, key) {
             cellDict[key] = new Cell(node.state, nodeDrawables[key], []);
+        });
+        goals.forEach(function (goal) {
+            cellDict[goal].isGoal = true;
         });
         edges.forEach(function (edge) {
             var refA = edge[0];
