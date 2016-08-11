@@ -8,15 +8,15 @@ G.installMyScenes = (function (Scenes, MVVMScene, Constants, StartScreen, LevelO
         sceneServices.tap = tap;
         sceneServices.events.subscribe(Event.POINTER, tap.inputChanged.bind(tap));
 
-        var sceneManager = new Scenes();
+        var scenes = new Scenes();
 
         var startScreen = new MVVMScene(sceneServices, sceneServices.scenes[Constants.START_SCREEN], new StartScreen(sceneServices), Constants.START_SCREEN);
         var levelOverview = new MVVMScene(sceneServices, sceneServices.scenes[Constants.LEVEL_OVERVIEW], new LevelOverview(sceneServices), Constants.LEVEL_OVERVIEW);
 
-        sceneManager.add(startScreen.show.bind(startScreen));
-        sceneManager.add(levelOverview.show.bind(levelOverview));
+        scenes.add(startScreen.show.bind(startScreen));
+        scenes.add(levelOverview.show.bind(levelOverview));
 
-        return sceneManager;
+        return scenes;
     }
 
     return installMyScenes;
