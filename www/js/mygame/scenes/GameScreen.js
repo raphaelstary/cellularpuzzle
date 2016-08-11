@@ -1,5 +1,5 @@
 G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, RulesOverlay, RuleEngine, HexViewHelper,
-    WorldView, World, Width, Height, changeSign, Font, Rules) {
+    WorldView, World, Width, Height, changeSign, Font, Rules, localStorage, loadBoolean, Success) {
     "use strict";
 
     /**
@@ -8,12 +8,14 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
      * @property aliveState
      * @property deadState
      */
-    function GameScreen(services, level) {
+    function GameScreen(services, level, levelNr) {
         this.stage = services.stage;
         this.timer = services.timer;
         this.device = services.device;
+        this.events = services.events;
 
         this.level = level;
+        this.levelNr = levelNr;
         this.services = services;
 
         this.__init();
@@ -139,7 +141,41 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
     GameScreen.prototype.nextUp = function () {
         if (this.__paused || this.__itIsOver)
             return;
-        this.world.nextStep();
+        var success = this.world.nextStep();
+
+        if (success) {
+            this.__itIsOver = true;
+            this.timer.doLater(this.__success.bind(this), 120);
+        }
+    };
+
+    /** @this ViewModel */
+    GameScreen.prototype.__success = function () {
+        this.events.fire(Event.ANALYTICS, {
+            type: 'level_end',
+            action: 'success',
+            summary: 'missing',
+            level: this.levelNr
+        });
+
+        var levelKey = this.levelNr < 10 ? '0' + this.levelNr : this.levelNr;
+        var nextLevelNr = this.levelNr + 1;
+        var nextLevelKey = nextLevelNr < 10 ? '0' + nextLevelNr : nextLevelNr;
+        var isUnlocked = loadBoolean(Constants.LEVEL_UNLOCKED + nextLevelKey);
+        var isFinished = loadBoolean(Constants.LEVEL_FINISHED + levelKey);
+
+        if (!isUnlocked) {
+            localStorage.setItem(Constants.LEVEL_UNLOCKED + nextLevelKey, true);
+            localStorage.setItem(Constants.LEVEL_UNLOCKING + nextLevelKey, true);
+        }
+        if (!isFinished) {
+            localStorage.setItem(Constants.LEVEL_FINISHED + levelKey, true);
+            localStorage.setItem(Constants.LEVEL_FINISHED_NOW + levelKey, true);
+        }
+
+        var successScreen = new MVVMScene(this.services, this.services.scenes['success'], new Success(this.services), 'success');
+
+        successScreen.show(this.nextScene.bind(this));
     };
 
     //noinspection JSUnusedGlobalSymbols
@@ -166,4 +202,5 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
 
     return GameScreen;
 })(H5.MVVMScene, G.Constants, G.PauseScreen, G.PauseReturnValue, G.RulesOverlay, G.RuleEngine, H5.HexViewHelper,
-    G.WorldView, G.World, H5.Width, H5.Height, H5.changeSign, H5.Font, G.Rules);
+    G.WorldView, G.World, H5.Width, H5.Height, H5.changeSign, H5.Font, G.Rules, H5.lclStorage, H5.loadBoolean,
+    G.Success);

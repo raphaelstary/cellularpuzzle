@@ -14,15 +14,11 @@ G.World = (function (RuleType) {
         changeSet.forEach(updateToNextState.bind(this));
         this.history.push(changeSet);
 
-        var success = isSuccess(this.cells);
+        this.cells.filter(isAlive).filter(isGoal).forEach(highlightRight.bind(this));
+        this.cells.filter(isAlive).filter(isNotGoal).forEach(highlightWrong.bind(this));
+        this.cells.filter(isDead).filter(isGoal).forEach(highlightGoal.bind(this));
 
-        if (!success) {
-            this.cells.filter(isAlive).filter(isGoal).forEach(highlightRight.bind(this));
-            this.cells.filter(isAlive).filter(isNotGoal).forEach(highlightWrong.bind(this));
-            this.cells.filter(isDead).filter(isGoal).forEach(highlightGoal.bind(this));
-        }
-
-        return success;
+        return isSuccess(this.cells);
     };
 
     World.prototype.previousStep = function () {
