@@ -35,13 +35,13 @@ G.World = (function () {
         }
     };
 
-    function updateToNextState(change) {
-        this.view.update(change.reference.drawable, change.nextState);
+    function updateToNextState(change, index) {
+        this.view.update(change.reference.drawable, change.nextState, index);
         change.reference.state = change.nextState;
     }
 
     function updateToPreviousState(change) {
-        this.view.update(change.reference.drawable, change.previousState);
+        this.view.simpleUpdate(change.reference.drawable, change.previousState);
         change.reference.state = change.previousState;
     }
 

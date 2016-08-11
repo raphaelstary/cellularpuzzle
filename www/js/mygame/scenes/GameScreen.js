@@ -6,9 +6,12 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
     /**
      * @property aliveRule
      * @property deadRule
+     * @property aliveState
+     * @property deadState
      */
     function GameScreen(services, level) {
         this.stage = services.stage;
+        this.timer = services.timer;
         this.device = services.device;
 
         this.level = level;
@@ -105,6 +108,7 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         }
     };
 
+    /** @this GameScreen */
     GameScreen.prototype.postConstruct = function () {
         this.__init();
 
@@ -114,11 +118,13 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         var ruleEngine = new RuleEngine(this.rules);
 
         var hexViewHelper = new HexViewHelper(this.stage, 3, 3, changeSign(Width.get(6)), Height.get(5));
-        this.view = new WorldView(this.stage, hexViewHelper, this.level.nodes, this.level.edges);
+        this.view = new WorldView(this.stage, this.timer, hexViewHelper, this.level.nodes, this.level.edges);
 
         var drawables = this.view.init();
         var cells = createCells(this.level.nodes, this.level.edges, drawables.nodes);
         this.world = new World(ruleEngine.decideNextState.bind(ruleEngine), cells, this.view);
+
+        this.timer.doLater(this.view.makeAlive.bind(this.view, this.aliveState), 45);
     };
 
     GameScreen.prototype.preDestroy = function () {
@@ -183,7 +189,7 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         if (this.__paused || this.__itIsOver)
             return;
 
-        var rulesView = new RulesOverlay(this.services, this.rules, true);
+        var rulesView = new RulesOverlay(this.services, this.view, this.rules, true);
         var rulesOverlayScene = new MVVMScene(this.services, this.services.scenes[Constants.RULES_OVERLAY], rulesView, Constants.RULES_OVERLAY);
         this.__paused = true;
         var self = this;

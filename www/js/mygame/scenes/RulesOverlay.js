@@ -1,9 +1,10 @@
-G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Height) {
+G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Height, Rule, RuleType, RuleOperator) {
     "use strict";
 
     /** @property addTxt */
-    function RulesOverlay(services, rules, editable) {
+    function RulesOverlay(services, animationView, rules, editable) {
         this.services = services;
+        this.animationView = animationView;
         this.rules = rules;
         this.__editable = editable;
 
@@ -41,7 +42,7 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
         function createRuleView(rule, index) {
             //noinspection JSPotentiallyInvalidUsageOfThis
             var activateEditMode = this.__addedNewRule && rule.id === this.__newRuleId;
-            var ruleView = new RuleShow(this.services, rule, setEditing, isEditing, deleteRule, activateEditMode);
+            var ruleView = new RuleShow(this.services, this.animationView, rule, setEditing, isEditing, deleteRule, activateEditMode);
 
             var ruleSubScene = new MVVMScene(this.services, this.services.scenes[Constants.RULE_SHOW], ruleView, Constants.RULE_SHOW, Constants.DEFAULT_SCENE_RECT, Width.HALF, Height.get(
                 8, index + 1));
@@ -94,13 +95,7 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
             return;
 
         var magicId = this.rules.length;
-        this.rules.push({
-            id: magicId,
-            type: 'dead',
-            value: 3,
-            operator: '=',
-            editable: true
-        });
+        this.rules.push(new Rule(magicId, RuleType.DEAD, 3, RuleOperator.EQUAL_TO, true));
 
         this.__addedNewRule = true;
         this.__newRuleId = magicId;
@@ -109,4 +104,4 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
     };
 
     return RulesOverlay;
-})(H5.MVVMScene, G.Constants, G.RuleShow, G.RuleEdit, H5.Width, H5.Height);
+})(H5.MVVMScene, G.Constants, G.RuleShow, G.RuleEdit, H5.Width, H5.Height, G.Rule, G.RuleType, G.RuleOperator);

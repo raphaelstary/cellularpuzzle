@@ -8,8 +8,9 @@ G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
      * @property currentState
      * @property nextState
      */
-    function RuleShow(services, rule, setEditing, isEditing, deleteRule, immediateEditing) {
+    function RuleShow(services, animationView, rule, setEditing, isEditing, deleteRule, immediateEditing) {
         this.services = services;
+        this.animationView = animationView;
         this.ruleData = rule;
         this.__setEditing = setEditing;
         this.__isEditing = isEditing;
@@ -69,9 +70,17 @@ G.RuleShow = (function (Font, Constants, MVVMScene, RuleEdit, EditReturn) {
         if (rule.type == 'dead') {
             this.currentState.setFilled(true);
             this.nextState.setFilled(false).setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 2));
+            if (!this.__immediateEditing) {
+                this.animationView.makeAlive(this.currentState);
+                this.nextState.pause();
+            }
         } else {
             this.currentState.setFilled(false).setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 2));
             this.nextState.setFilled(true);
+            if (!this.__immediateEditing) {
+                this.animationView.makeAlive(this.nextState);
+                this.currentState.pause();
+            }
         }
     };
 
