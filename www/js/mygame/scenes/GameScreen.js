@@ -58,8 +58,8 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         this.__updateRuleSummary();
         this.ruleEngine = new RuleEngine(this.rules);
 
-        var hexViewHelper = new HexViewHelper(this.stage, this.level.grid.xTiles, this.level.grid.yTiles, changeSign(
-            Width.get(6)), Height.get(5));
+        var offset = Height.get(10);
+        var hexViewHelper = new HexViewHelper(this.stage, this.level.grid.xTiles, this.level.grid.yTiles, offset, offset, this.level.grid.adjustCenter);
         this.view = new WorldView(this.stage, this.timer, hexViewHelper, this.level.nodes, this.level.edges);
 
         var drawables = this.view.init();

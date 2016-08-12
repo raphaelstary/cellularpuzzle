@@ -34,8 +34,8 @@ G.WorldView = (function (iterateEntries, RuleType, Constants, Font, wrap, Math, 
         }
     ];
 
-    function radius(width) {
-        return Math.floor(this.hexViewHelper.getWidth(width) / 5);
+    function radius(width, height) {
+        return Math.floor(this.hexViewHelper.getWidth(width, height) / 5);
     }
 
     WorldView.prototype.init = function () {
