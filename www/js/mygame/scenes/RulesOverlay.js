@@ -26,8 +26,9 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
         }
 
         function deleteRule(rule) {
+            var ruleString = rule.toString();
             var foundIt = self.rules.some(function (elem, i, rules) {
-                if (elem.id === rule.id) {
+                if (elem.toString() === ruleString) {
                     rules.splice(i, 1);
                     return true;
                 }
@@ -41,7 +42,7 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
 
         function createRuleView(rule, index) {
             //noinspection JSPotentiallyInvalidUsageOfThis
-            var activateEditMode = this.__addedNewRule && rule.id === this.__newRuleId;
+            var activateEditMode = this.__addedNewRule && rule.toString() === this.__newRule;
             var ruleView = new RuleShow(this.services, this.animationView, rule, setEditing, isEditing, deleteRule, activateEditMode);
 
             var ruleSubScene = new MVVMScene(this.services, this.services.scenes[Constants.RULE_SHOW], ruleView, Constants.RULE_SHOW, Constants.DEFAULT_SCENE_RECT, Width.HALF, Height.get(
@@ -55,7 +56,7 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
 
         if (this.__addedNewRule) {
             this.__addedNewRule = false;
-            this.__newRuleId = undefined;
+            this.__newRule = undefined;
         }
 
         if (this.__editable)
@@ -95,11 +96,11 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
         if (!this.__editable)
             return;
 
-        var magicId = this.rules.length;
-        this.rules.push(new Rule(magicId, RuleType.DEAD, 3, RuleOperator.EQUAL_TO, true));
+        var rule = new Rule(RuleType.DEAD, 3, RuleOperator.EQUAL_TO, true);
+        this.rules.push(rule);
 
         this.__addedNewRule = true;
-        this.__newRuleId = magicId;
+        this.__newRule = rule.toString();
 
         this.restartScene();
     };

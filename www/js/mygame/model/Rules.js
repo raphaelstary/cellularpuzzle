@@ -60,8 +60,8 @@ G.Rules = (function (Object, iterateEntries, RuleType, Rule, Cell) {
         })
     }
 
-    function toRule(rule, i) {
-        return new Rule(i, rule.type, rule.value, rule.operator, rule.editable)
+    function toRule(rule) {
+        return new Rule(rule.type, rule.value, rule.operator, rule.editable)
     }
 
     return {
