@@ -58,7 +58,8 @@ G.RulesOverlay = (function (MVVMScene, Constants, RuleShow, RuleEdit, Width, Hei
             this.__newRuleId = undefined;
         }
 
-        this.__editable = this.rules.length < Constants.MAX_RULES;
+        if (this.__editable)
+            this.__editable = this.rules.length < Constants.MAX_RULES;
 
         if (!this.__editable)
             this.addTxt.hide();
