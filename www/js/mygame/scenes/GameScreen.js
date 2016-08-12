@@ -71,24 +71,7 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
             return drawables.nodes[goal];
         });
 
-        var highlightGoalStates = this.view.highlightGoalStates.bind(this.view, goalStates);
-
-        // var counter = 0;
-        // var doItAgain = function (promise) {
-        //     if (++counter > 1)
-        //         return;
-        //
-        //     if (promise.isOver) {
-        //         highlightGoalStates().forEach(doItAgain);
-        //     } else {
-        //         promise.callback = function () {
-        //             highlightGoalStates().forEach(doItAgain);
-        //         }
-        //     }
-        // };
-        // highlightGoalStates().forEach(doItAgain);
-
-        highlightGoalStates();
+        this.view.highlightGoalStates(goalStates);
     };
 
     GameScreen.prototype.preDestroy = function () {
