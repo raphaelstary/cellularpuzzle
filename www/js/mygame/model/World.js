@@ -69,7 +69,8 @@ G.World = (function (RuleType) {
     }
 
     function isSuccess(cells) {
-        return cells.filter(isAlive).every(isGoal);
+        var aliveCells = cells.filter(isAlive);
+        return aliveCells.length > 0 && aliveCells.every(isGoal) && cells.filter(isDead).every(isNotGoal);
     }
 
     function isAlive(cell) {
