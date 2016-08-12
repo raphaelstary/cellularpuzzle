@@ -58,7 +58,8 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         this.__updateRuleSummary();
         this.ruleEngine = new RuleEngine(this.rules);
 
-        var hexViewHelper = new HexViewHelper(this.stage, 3, 3, changeSign(Width.get(6)), Height.get(5));
+        var hexViewHelper = new HexViewHelper(this.stage, this.level.grid.xTiles, this.level.grid.yTiles, changeSign(
+            Width.get(6)), Height.get(5));
         this.view = new WorldView(this.stage, this.timer, hexViewHelper, this.level.nodes, this.level.edges);
 
         var drawables = this.view.init();
@@ -170,7 +171,7 @@ G.GameScreen = (function (MVVMScene, Constants, PauseScreen, PauseReturnValue, R
         if (this.__paused || this.__itIsOver)
             return;
 
-        var rulesView = new RulesOverlay(this.services, this.view, this.rules, true);
+        var rulesView = new RulesOverlay(this.services, this.view, this.rules, this.level.grid.rulesEditable);
         var rulesOverlayScene = new MVVMScene(this.services, this.services.scenes[Constants.RULES_OVERLAY], rulesView, Constants.RULES_OVERLAY);
         this.__paused = true;
         var self = this;
