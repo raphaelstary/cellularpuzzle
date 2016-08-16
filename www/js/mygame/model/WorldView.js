@@ -81,9 +81,9 @@ G.WorldView = (function (iterateEntries, RuleType, Constants, Font, wrap, Math, 
         return this.stage.createCircle()
             .setPosition(wrap(drawable, 'x'), wrap(drawable, 'y'), [drawable])
             .setRadius(radius.bind(this))
-            .setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 1))
             .setColor(color)
-            .setZIndex(2);
+            .setZIndex(2)
+            .setLineWidth(Font.get(Constants.DEFAULT_SCENE_HEIGHT, 3));
     };
 
     var SCALE_MAX = 2;
